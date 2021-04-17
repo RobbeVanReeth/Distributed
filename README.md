@@ -8,4 +8,3 @@ https://intellij-support.jetbrains.com/hc/en-us/articles/206544839-How-to-manage
 
 Guide to Java sockets: 
 https://www.baeldung.com/a-guide-to-java-sockets
-
