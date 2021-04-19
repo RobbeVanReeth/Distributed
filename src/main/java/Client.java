@@ -9,9 +9,9 @@ public class Client {
 
     public void startConnection(String ip, int port){
         try {
-            clientSocket = new Socket(ip, port);
-            out = new PrintWriter(clientSocket.getOutputStream(), true);
-            in = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
+            clientSocket = new Socket(ip, port);        // try to connect to a socket
+            out = new PrintWriter(clientSocket.getOutputStream(), true);    // outputstream for the data going to the server
+            in = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));  // inputstream for the data coming from the server
         }
         catch (Exception e){
             System.out.printf("Something went wrong: " + e.toString());
@@ -32,9 +32,9 @@ public class Client {
 
     public void stop(){
         try {
-            in.close();
-            out.close();
-            clientSocket.close();
+            in.close();     // close the inputstream
+            out.close();    // close the outputstream
+            clientSocket.close();   // end the connection
         }
         catch (Exception e) {
             System.out.println("Something went wrong: " + e.toString());
