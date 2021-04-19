@@ -41,4 +41,17 @@ public class Client {
         }
     }
 
+    public static void main(String[] args) {
+        if (args.length < 2) return;
+        Client client = new Client();
+        client.startConnection(args[0], Integer.parseInt(args[1]));
+
+        if (args[2] != null){
+            String returnmsg = client.sendMessage(args[2]);
+            System.out.println(returnmsg);
+        }
+
+        client.stop();
+    }
+
 }
