@@ -1,7 +1,7 @@
 import java.net.*;
 import java.io.*;
 
-public class HelloServer {
+public class Server {
     private ServerSocket serverSocket;
     private Socket clientSocket;
     private PrintWriter out;
@@ -40,7 +40,7 @@ public class HelloServer {
     }
 
     public static void main(String[] args) {
-        HelloServer server = new HelloServer();
+        Server server = new Server();
         server.start(6666);
     }
 
