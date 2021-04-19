@@ -1,7 +1,7 @@
 import java.io.*;
 import java.net.*;
 
-public class HelloClient {
+public class Client {
 
     private Socket clientSocket;
     private PrintWriter out;
