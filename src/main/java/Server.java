@@ -2,47 +2,44 @@ import java.net.*;
 import java.io.*;
 
 public class Server {
-    private ServerSocket serverSocket;
-    private Socket clientSocket;
-    private PrintWriter out;
-    private BufferedReader in;
 
-    public void start(int port) {
+    public final static int SOCKET_PORT = 13267;  // you may change this
+    public final static String FILE_TO_SEND = "d:/files/file1.pdf";  // you may change this
+
+    public static void main (String [] args ) throws IOException {
+        FileInputStream fis = null;
+        BufferedInputStream bis = null;
+        OutputStream os = null;
+        ServerSocket servsock = null;
+        Socket sock = null;
         try {
-            serverSocket = new ServerSocket(port);      // make new serversocket on a certain port
-            clientSocket = serverSocket.accept();       // accept the incoming connection
-
-            out = new PrintWriter(clientSocket.getOutputStream(), true);    // outputstream for data going to the client
-            in = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));  // inputstream for data coming to the server
-
-            String hello = in.readLine();
-            if ("hello server".equals(hello)){      // if the server gets the message "hello server" it responds with "hello client"
-                out.println("hello client");
+            servsock = new ServerSocket(SOCKET_PORT);
+            while (true) {
+                System.out.println("Waiting...");
+                try {
+                    sock = servsock.accept();
+                    System.out.println("Accepted connection : " + sock);
+                    // send file
+                    File myFile = new File (FILE_TO_SEND);
+                    byte [] mybytearray  = new byte [(int)myFile.length()];
+                    fis = new FileInputStream(myFile);
+                    bis = new BufferedInputStream(fis);
+                    bis.read(mybytearray,0,mybytearray.length);
+                    os = sock.getOutputStream();
+                    System.out.println("Sending " + FILE_TO_SEND + "(" + mybytearray.length + " bytes)");
+                    os.write(mybytearray,0,mybytearray.length);
+                    os.flush();
+                    System.out.println("Done.");
+                }
+                finally {
+                    if (bis != null) bis.close();
+                    if (os != null) os.close();
+                    if (sock!=null) sock.close();
+                }
             }
-            else {
-                out.println("unrecognised greeting");
-            }
         }
-        catch(Exception e) {
-            System.out.println("Something went wrong: "+e.toString());
+        finally {
+            if (servsock != null) servsock.close();
         }
     }
-
-    public void stop() {
-        try {
-            in.close();     // close the inputstream
-            out.close();    // close the outputstream
-            clientSocket.close();   // close the connection to the client
-            serverSocket.close();   // close the serversocket
-        }
-        catch(Exception e) {
-            System.out.println("Something went wrong: " + e.toString());
-        }
-    }
-
-    public static void main(String[] args) {
-        Server server = new Server();
-        server.start(5000);
-    }
-
 }
